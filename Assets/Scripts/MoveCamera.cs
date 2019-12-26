@@ -4,51 +4,68 @@ using UnityEngine;
 
 public class MoveCamera : MonoBehaviour
 {
-
+    public float rotateSpeed = 2f;
     public float panSpeed = 100f;
     public float scrollSpeed = 10f;
 
     private float panBorder = 20f;
+    private Vector3 pos;
+    private Vector3 posBonderies;
+    private float mouseX;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 pos = transform.position;
+        posBonderies = transform.position;
+        pos = Vector3.zero;
 
         if (Input.GetKey("z") || Input.mousePosition.y >= Screen.height - panBorder)
         {
-            pos.z += panSpeed * Time.deltaTime;
+            pos += Vector3.forward * panSpeed * Time.deltaTime;
         }
 
         if (Input.GetKey("s") || Input.mousePosition.y <= panBorder)
         {
-            pos.z -= panSpeed * Time.deltaTime;
+            pos -= Vector3.forward * panSpeed * Time.deltaTime;
         }
 
         if (Input.GetKey("d") || Input.mousePosition.x >= Screen.width - panBorder)
         {
-            pos.x += panSpeed * Time.deltaTime;
+            pos += Vector3.right * panSpeed * Time.deltaTime;
         }
 
         if (Input.GetKey("q") || Input.mousePosition.x <= panBorder)
         {
-            pos.x -= panSpeed * Time.deltaTime;
+            pos -= Vector3.right * panSpeed * Time.deltaTime;
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            if (Input.mousePosition.x != mouseX)
+            {
+                var cameraRotationY = (Input.mousePosition.x - mouseX) * rotateSpeed * Time.deltaTime;
+                transform.Rotate(0, cameraRotationY, 0, Space.World);
+            }
         }
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         pos.y -= scroll * scrollSpeed * 100 * Time.deltaTime;
 
-        pos.x = Mathf.Clamp(pos.x, -330, 330);
-        pos.y = Mathf.Clamp(pos.y, 30, 500);
-        pos.z = Mathf.Clamp(pos.z, -560, 200);
+        posBonderies.x = Mathf.Clamp(posBonderies.x, -700, 700);
+        posBonderies.y = Mathf.Clamp(posBonderies.y, 30, 500);
+        posBonderies.z = Mathf.Clamp(posBonderies.z, -700, 700);
 
 
-        transform.position = pos;
+        transform.position = posBonderies;
+        transform.Translate(pos, Space.Self);
+
+        //transform.localPosition = pos;
+        mouseX = Input.mousePosition.x;
     }
 }
