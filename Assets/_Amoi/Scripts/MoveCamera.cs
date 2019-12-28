@@ -7,16 +7,19 @@ public class MoveCamera : MonoBehaviour
     public float rotateSpeed = 2f;
     public float panSpeed = 100f;
     public float scrollSpeed = 10f;
+    public bool movementCameraBind;
 
     private float _panBorder = 20f;
     private Vector3 _pos;
     private Vector3 _posBonderies;
     private float _mouseX;
 
+    private Input _key;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        movementCameraBind = true;
     }
 
     // Update is called once per frame
@@ -25,24 +28,49 @@ public class MoveCamera : MonoBehaviour
         _posBonderies = transform.position;
         _pos = Vector3.zero;
 
-        if (Input.GetKey("z") || Input.mousePosition.y >= Screen.height - _panBorder)
+        if (movementCameraBind == true)
         {
-            _pos += Vector3.forward * panSpeed * Time.deltaTime;
-        }
+            if (Input.GetKey("z"))
+            {
+                _pos += Vector3.forward * panSpeed * Time.deltaTime;
+            }
 
-        if (Input.GetKey("s") || Input.mousePosition.y <= _panBorder)
-        {
-            _pos -= Vector3.forward * panSpeed * Time.deltaTime;
-        }
+            if (Input.GetKey("s"))
+            {
+                _pos -= Vector3.forward * panSpeed * Time.deltaTime;
+            }
 
-        if (Input.GetKey("d") || Input.mousePosition.x >= Screen.width - _panBorder)
-        {
-            _pos += Vector3.right * panSpeed * Time.deltaTime;
-        }
+            if (Input.GetKey("d"))
+            {
+                _pos += Vector3.right * panSpeed * Time.deltaTime;
+            }
 
-        if (Input.GetKey("q") || Input.mousePosition.x <= _panBorder)
+            if (Input.GetKey("q"))
+            {
+                _pos -= Vector3.right * panSpeed * Time.deltaTime;
+            }
+        }
+        else
         {
-            _pos -= Vector3.right * panSpeed * Time.deltaTime;
+            if (Input.mousePosition.y >= Screen.height - _panBorder)
+            {
+                _pos += Vector3.forward * panSpeed * Time.deltaTime;
+            }
+
+            if (Input.mousePosition.y <= _panBorder)
+            {
+                _pos -= Vector3.forward * panSpeed * Time.deltaTime;
+            }
+
+            if (Input.mousePosition.x >= Screen.width - _panBorder)
+            {
+                _pos += Vector3.right * panSpeed * Time.deltaTime;
+            }
+
+            if (Input.mousePosition.x <= _panBorder)
+            {
+                _pos -= Vector3.right * panSpeed * Time.deltaTime;
+            }
         }
 
         if (Input.GetMouseButton(1))
