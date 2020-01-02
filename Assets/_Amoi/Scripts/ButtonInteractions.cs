@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,7 +9,7 @@ using UnityEngine.UI;
 public class ButtonInteractions : MonoBehaviour
 {
     public Sprite Box;
-    public Sprite CheckBox;    
+    public Sprite CheckBox;
 
     private GameObject _optionMenu;
     private GameObject _rulesMenu;
@@ -23,9 +25,13 @@ public class ButtonInteractions : MonoBehaviour
     private GameObject _ZQSDButton;
     private GameObject _cursorButton;
 
+    private GameObject[] _races;
+    private GameObject[] _AIPlayers;
+
     private MoveCamera _moveCamera;
 
-    private int _numbersAIPlayer;
+    private bool _checkNbAIPlayers;
+    private bool _checkRace;
 
     void Start()
     {
@@ -43,14 +49,19 @@ public class ButtonInteractions : MonoBehaviour
         _ZQSDButton = GameObject.Find("ZqsdCommand");
         _cursorButton = GameObject.Find("CursorCommand");
 
+        _races = GameObject.FindGameObjectsWithTag("Races");
+        _AIPlayers = GameObject.FindGameObjectsWithTag("NbAiPlayers");
+
         _moveCamera = GameObject.Find("HoldCamera").GetComponent<MoveCamera>();
 
         _optionMenu.SetActive(false);
         _rulesMenu.SetActive(false);
         _startMenu.SetActive(false);
         _pauseMenu.SetActive(false);
-    }
 
+        _checkRace = false;
+        _checkNbAIPlayers = false;
+    }
 
     #region QUIT 
 
@@ -146,60 +157,90 @@ public class ButtonInteractions : MonoBehaviour
         _newgameMenu.SetActive(true);
     }
 
-    public void OnNumber1Button()
-    {
-        _numbersAIPlayer = 1;
-        Debug.Log(_numbersAIPlayer);
-    }
-
-    public void OnNumber2Button()
-    {
-        _numbersAIPlayer = 2;
-        Debug.Log(_numbersAIPlayer);
-    }
-
-    public void OnNumber3Button()
-    {
-        _numbersAIPlayer = 3;
-        Debug.Log(_numbersAIPlayer);
-    }
-
-    public void OnNumber4Button()
-    {
-        _numbersAIPlayer = 4;
-        Debug.Log(_numbersAIPlayer);
-    }
-
-    public void OnNumber5Button()
-    {
-        _numbersAIPlayer = 5;
-        Debug.Log(_numbersAIPlayer);
-    }
-
-    public void OnNumber6Button()
-    {
-        _numbersAIPlayer = 6;
-        Debug.Log(_numbersAIPlayer);
-    }
-
     public void OnCreateGameButton()
     {
-        if (_numbersAIPlayer != 0)
+        if (_checkNbAIPlayers == true && _checkRace == true)
         {
             _optionMenu.SetActive(false);
             _rulesMenu.SetActive(false);
             _startMenu.SetActive(false);
             _pauseMenu.SetActive(false);
             _principalMenu.SetActive(false);
+            _moveCamera.inGame = true;
         }
     }
 
+    public void OnChooseRacesButton()
+    {
+        if (EventSystem.current.currentSelectedGameObject.transform.GetComponent<Button>().interactable == true)
+        {
+            for (int i = 0; i < _races.Length; i++)
+            {
+                _races[i].GetComponent<Button>().interactable = true;
+            }
+            EventSystem.current.currentSelectedGameObject.transform.GetComponent<Button>().interactable = false;
+
+            for (int i = 0; i < _races.Length; i++)
+            {
+                if (_races[i].GetComponent<Button>().interactable == false)
+                {
+                    Debug.Log(_races[i].name);
+                }
+            }
+            _checkRace = true;
+        }
+    }
+
+    public void OnNbAiPlayersButton()
+    {
+        if (EventSystem.current.currentSelectedGameObject.transform.GetComponent<Button>().interactable == true)
+        {
+            for (int i = 0; i < _AIPlayers.Length; i++)
+            {
+                _AIPlayers[i].GetComponent<Button>().interactable = true;
+            }
+            EventSystem.current.currentSelectedGameObject.transform.GetComponent<Button>().interactable = false;
+
+            for (int i = 0; i < _AIPlayers.Length; i++)
+            {
+                if (_AIPlayers[i].GetComponent<Button>().interactable == false)
+                {
+                    string numbersOnly = Regex.Replace(_AIPlayers[i].name, "[^0-9]", "");
+                    int nbAiPlayer = Convert.ToInt32(numbersOnly);
+                    Debug.Log(nbAiPlayer);
+                }
+            }
+            _checkNbAIPlayers = true;
+        }
+    }
+
+
+
     #endregion
 
-    public void OnPauseButton()
+    #region PAUSE
+
+    public void OnKeyOpenPauseMenuButton()
     {
-        _startMenu.SetActive(true);
+        _pauseMenu.SetActive(true);
     }
+
+    public void OnKeyClosePauseMenuButton()
+    {
+        _pauseMenu.SetActive(false);
+        _moveCamera.pause = false;
+    }
+
+    public void OnRestartButton()
+    {
+        //Reset Scene
+        _newgameMenu.SetActive(true);
+        _startMenu.SetActive(true);
+        _pauseMenu.SetActive(false);
+        _moveCamera.pause = false;
+    }
+
+    #endregion
 
     public void OnGoMenuButton()
     {
@@ -208,5 +249,7 @@ public class ButtonInteractions : MonoBehaviour
         _startMenu.SetActive(false);
         _pauseMenu.SetActive(false);
         _principalMenu.SetActive(true);
+        _moveCamera.inGame = false;
+        _moveCamera.pause = false;
     }
 }
