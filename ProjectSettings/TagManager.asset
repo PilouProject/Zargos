@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Races
   - NbAiPlayers
+  - AttackDice
+  - DefenseDice
   layers:
   - Default
   - TransparentFX
