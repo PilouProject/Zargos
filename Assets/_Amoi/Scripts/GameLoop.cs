@@ -2,25 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Click : MonoBehaviour
+public class GameLoop : MonoBehaviour
 {
-    private bool _isClicked = false;
+    public PlayerClass Player1; 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Player1 = new PlayerClass();
+        Player1.Init();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    private void OnMouseDown()
-    {
-        _isClicked = true;
-        Debug.Log(this.name);
+        Debug.Log(Player1.NbUnitAvailable);
     }
 }
