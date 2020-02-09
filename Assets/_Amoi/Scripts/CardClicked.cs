@@ -20,18 +20,18 @@ public class CardClicked : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //gestion d'erreur s'il n'y a plus d'enfant
-        Debug.Log(gameObject.name);
-        if (gameObject.name == "MagicRed" || gameObject.name == "MagicGreen")
+        if (transform.childCount != 0)
         {
-            GameLoop.Player1.AddMagicCard(transform.GetChild(0).name);
+            if (gameObject.name == "MagicRed" || gameObject.name == "MagicGreen")
+            {
+                GameLoop.Player1.AddMagicCard(transform.GetChild(0).name);
+            }
+            else
+            {
+                GameLoop.Player1.CardTreatmentPhase0(transform.GetChild(0).name);
+                GameLoop.Player1.EndTurnUnitCount();
+            }
+            Destroy(transform.GetChild(0).gameObject);
         }
-        else
-        {
-            //Debug.Log(transform.GetChild(0).name);
-            GameLoop.Player1.CardTreatmentPhase0(transform.GetChild(0).name);
-            GameLoop.Player1.EndTurnUnitCount();
-        }
-        Destroy(transform.GetChild(0).gameObject);
     }
 }

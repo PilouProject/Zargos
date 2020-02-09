@@ -9,6 +9,8 @@ public class PlayerClass
     public List<string> MagicCard;
     public int NbCapital;
     public int NbBoat;
+    public string Race;
+
 
     //fonction hilight des regions possédé TerritoryOwn[Name] = 0;
 
@@ -82,10 +84,10 @@ public class PlayerClass
         TerritoryOwn.Add("Itak", -1);
         TerritoryOwn.Add("Itak_1", -1);
         TerritoryOwn.Add("Itak_2", -1);
+        TerritoryOwn.Add("Akilon", -1);
         TerritoryOwn.Add("Akilon_1", -1);
         TerritoryOwn.Add("Akilon_2", -1);
         TerritoryOwn.Add("Akilon_3", -1);
-        TerritoryOwn.Add("Akilon_4", -1);
         TerritoryOwn.Add("Palmyr", -1);
         TerritoryOwn.Add("Palmyr_1", -1);
         TerritoryOwn.Add("Palmyr_2", -1);

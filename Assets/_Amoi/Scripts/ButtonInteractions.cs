@@ -10,6 +10,7 @@ public class ButtonInteractions : MonoBehaviour
 {
     public Sprite Box;
     public Sprite CheckBox;
+    public GameLoop GameLoop;
 
     private GameObject _optionMenu;
     private GameObject _rulesMenu;
@@ -166,7 +167,6 @@ public class ButtonInteractions : MonoBehaviour
             _startMenu.SetActive(false);
             _pauseMenu.SetActive(false);
             _principalMenu.SetActive(false);
-            _moveCamera.inGame = true;
         }
     }
 
@@ -184,7 +184,8 @@ public class ButtonInteractions : MonoBehaviour
             {
                 if (_races[i].GetComponent<Button>().interactable == false)
                 {
-                    Debug.Log(_races[i].name);
+                    GameLoop.Player1.Race = _races[i].name;
+                    Debug.Log(GameLoop.Player1.Race);
                 }
             }
             _checkRace = true;
