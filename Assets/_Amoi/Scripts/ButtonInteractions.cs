@@ -18,6 +18,7 @@ public class ButtonInteractions : MonoBehaviour
     private GameObject _startMenu;
     private GameObject _pauseMenu;
     private GameObject _newgameMenu;
+    private GameObject _inGameHUD;
 
     private GameObject _lowButton;
     private GameObject _mediumButton;
@@ -42,6 +43,7 @@ public class ButtonInteractions : MonoBehaviour
         _startMenu = GameObject.Find("StartMenu");
         _pauseMenu = GameObject.Find("PauseMenu");
         _newgameMenu = GameObject.Find("NewGameMenu");
+        _inGameHUD = GameObject.Find("InGameHUD");
 
         _lowButton = GameObject.Find("LowButton");
         _mediumButton = GameObject.Find("MediumButton");
@@ -59,6 +61,7 @@ public class ButtonInteractions : MonoBehaviour
         _rulesMenu.SetActive(false);
         _startMenu.SetActive(false);
         _pauseMenu.SetActive(false);
+        //_inGameHUD.SetActive(false);
 
         _checkRace = false;
         _checkNbAIPlayers = false;
@@ -167,6 +170,7 @@ public class ButtonInteractions : MonoBehaviour
             _startMenu.SetActive(false);
             _pauseMenu.SetActive(false);
             _principalMenu.SetActive(false);
+            _inGameHUD.SetActive(true);
         }
     }
 
@@ -252,5 +256,7 @@ public class ButtonInteractions : MonoBehaviour
         _principalMenu.SetActive(true);
         _moveCamera.inGame = false;
         _moveCamera.pause = false;
+
+        //Reload Scene !!
     }
 }

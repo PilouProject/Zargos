@@ -29,8 +29,8 @@ public class CardClicked : MonoBehaviour
             else
             {
                 GameLoop.Player1.CardTreatmentPhase0(transform.GetChild(0).name);
-                GameLoop.Player1.EndTurnUnitCount();
             }
+            Debug.Log(transform.GetChild(0));
             Destroy(transform.GetChild(0).gameObject);
         }
     }

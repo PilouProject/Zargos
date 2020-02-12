@@ -7,8 +7,7 @@ public class PlayerClass
     public int NbUnitAvailable;
     public Dictionary<string, int> TerritoryOwn;
     public List<string> MagicCard;
-    public int NbCapital;
-    public int NbBoat;
+    public int NbShips;
     public string Race;
 
 
@@ -31,7 +30,7 @@ public class PlayerClass
             if (item.Value >= 0)
             {
                 string[] tmpString = item.Key.Split("_"[0]);
-                if (tmpString[0] == "Zargos" && tmpString.Length > 1)
+                if (tmpString[0] == "Zargos" && tmpString.Length <= 1)
                     tmp += 3;
                 else if (tmpString[0] == "Zargos")
                     tmp += 7;
@@ -44,16 +43,28 @@ public class PlayerClass
         NbUnitAvailable = tmp;
     }
 
-    public int NbTerritoryOwn()
+    public int NbTerritoryOwn(bool TypeTerritory)
     {
         int tmp;
+        string[] tmpString;
 
         tmp = 0;
-        foreach (int i in TerritoryOwn.Values)
+        if (TypeTerritory == true)
         {
-            if (i >= 0)
-                tmp += 1;
+            foreach (KeyValuePair<string, int> i in TerritoryOwn)
+            {
+                tmpString = i.Key.Split("_"[0]);
+                if (i.Value >= 0 && tmpString.Length <= 1)
+                    tmp += 1;
+            }
         }
+        else
+            foreach (KeyValuePair<string, int> i in TerritoryOwn)
+            {
+                tmpString = i.Key.Split("_"[0]);
+                if (i.Value >= 0 && tmpString.Length > 1)
+                    tmp += 1;
+            }
 
         return (tmp);
     }
@@ -61,8 +72,9 @@ public class PlayerClass
     public void Init()
     {
         //if le nb je joueur
+        NbShips = 0;
         MagicCard = new List<string>();
-        NbUnitAvailable = 0;
+        NbUnitAvailable = 35;
         TerritoryOwn = new Dictionary<string, int>();
         TerritoryOwn.Add("Ohms", -1);
         TerritoryOwn.Add("Ohms_1", -1);
@@ -133,7 +145,7 @@ public class PlayerClass
         }
         else if (NameCard == "Ship")
         {
-            NbBoat += 1;
+            NbShips += 1;
         }
         else
             TerritoryOwn[NameCard] = 0;
