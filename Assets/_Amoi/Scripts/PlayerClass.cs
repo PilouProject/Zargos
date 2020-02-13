@@ -6,6 +6,7 @@ public class PlayerClass
 {
     public int NbUnitAvailable;
     public Dictionary<string, int> TerritoryOwn;
+    public Dictionary<string, List<GameObject>> UnitsInTerritoryOwn;
     public List<string> MagicCard;
     public int NbShips;
     public string Race;
@@ -72,9 +73,11 @@ public class PlayerClass
     public void Init()
     {
         //if le nb je joueur
+        List<GameObject> tmp = new List<GameObject>();
         NbShips = 0;
         MagicCard = new List<string>();
         NbUnitAvailable = 35;
+        UnitsInTerritoryOwn = new Dictionary<string, List<GameObject>>();
         TerritoryOwn = new Dictionary<string, int>();
         TerritoryOwn.Add("Ohms", -1);
         TerritoryOwn.Add("Ohms_1", -1);
@@ -133,6 +136,64 @@ public class PlayerClass
         TerritoryOwn.Add("Kahil_3", -1);
         TerritoryOwn.Add("Kahil_4", -1);
         TerritoryOwn.Add("Kahil_5", -1);
+
+        UnitsInTerritoryOwn.Add("Ohms", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ohms_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ohms_2", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ohms_3", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ohms_4", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ohms_5", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ohms_6", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Zargos", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Zargos_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Zargos_2", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Zargos_3", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Zargos_4", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Zargos_5", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Zargos_6", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Zargos_7", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Zargos_8", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Zargos_9", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Itak", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Itak_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Itak_2", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Akilon", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Akilon_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Akilon_2", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Akilon_3", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Palmyr", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Palmyr_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Palmyr_2", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Palmyr_3", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Palmyr_4", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Tairo", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Tairo_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Tairo_2", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Tairo_3", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Tairo_4", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Oz", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Oz_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Banzol", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Banzol_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Banzol_2", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Banzol_3", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Banzol_4", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Banzol_5", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Kori", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Kori_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Kori_2", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Kori_3", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ludos", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ludos_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ludos_2", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ludos_3", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Ludos_4", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Kahil", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Kahil_1", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Kahil_2", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Kahil_3", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Kahil_4", new List<GameObject>());
+        UnitsInTerritoryOwn.Add("Kahil_5", new List<GameObject>());
 
 
     }

@@ -61,7 +61,6 @@ public class ButtonInteractions : MonoBehaviour
         _rulesMenu.SetActive(false);
         _startMenu.SetActive(false);
         _pauseMenu.SetActive(false);
-        //_inGameHUD.SetActive(false);
 
         _checkRace = false;
         _checkNbAIPlayers = false;
