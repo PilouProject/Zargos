@@ -25,12 +25,14 @@ public class MouseEvent : MonoBehaviour
         _spawnPoint = transform.GetChild(0);
 
         _onMouseOver = false;
-        t = 1.0f;
+        t = 2.0f;
         _ground = transform.GetChild(2).GetComponent<Renderer>();
         _ownGroundHighlight = transform.GetChild(1).gameObject;
         _rendererHighlight = _ownGroundHighlight.GetComponent<Renderer>();
         _colorStart = new Color32(48, 161, 65, 0);
         _colorEnd = new Color32(85, 255, 112, 0);
+
+        _ownGroundHighlight.SetActive(false);
 
         //Physics.gravity = new Vector3(0, -9.81f, 0);
     }
@@ -38,6 +40,8 @@ public class MouseEvent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameLoop.Player1.TerritoryOwn[name] >= 0)
+            _ownGroundHighlight.SetActive(true);
         _rendererHighlight.material.SetColor("_LineColor", Color.Lerp(_colorStart, _colorEnd, Mathf.PingPong(Time.time, t) / t));
 
     }
@@ -54,7 +58,7 @@ public class MouseEvent : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            if (GameLoop.Player1.TerritoryOwn[name] > 1 && (GameLoop.Phase == 0 || GameLoop.Phase == 2))
+            if (GameLoop.Player1.TerritoryOwn[name] > 1)// && (GameLoop.Phase == 0 || GameLoop.Phase == 2))
             {
                 GameLoop.Player1.NbUnitAvailable += 1;
                 Destroy(GameLoop.Player1.UnitsInTerritoryOwn[name][GameLoop.Player1.UnitsInTerritoryOwn[name].Count - 1]);
