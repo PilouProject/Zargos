@@ -6,10 +6,12 @@ public class CardClicked : MonoBehaviour
 {
     public GameLoop GameLoop;
 
+    private AudioSource _drawCardSong;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        _drawCardSong = GameObject.Find("DrawCardSong").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -32,6 +34,7 @@ public class CardClicked : MonoBehaviour
             }
             Debug.Log(transform.GetChild(0));
             Destroy(transform.GetChild(0).gameObject);
+            _drawCardSong.Play();
         }
     }
 }

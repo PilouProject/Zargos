@@ -20,6 +20,9 @@ public class GameLoop : MonoBehaviour
     private Text _numberRegionsHUD;
     private Text _numberCapitalsHUD;
 
+    private AudioSource _menuSong;
+    private AudioSource _inGameSong;
+
     private bool InitGame;
 
     // Start is called before the first frame update
@@ -43,7 +46,9 @@ public class GameLoop : MonoBehaviour
         _numberShipsHUD = GameObject.Find("NumberShips").GetComponent<Text>();
         _numberRegionsHUD = GameObject.Find("NumberRegions").GetComponent<Text>();
         _numberCapitalsHUD = GameObject.Find("NumberCapitals").GetComponent<Text>();
-        
+
+        _menuSong = GameObject.Find("MenuSong").GetComponent<AudioSource>();
+        _inGameSong = GameObject.Find("InGameSong").GetComponent<AudioSource>();
 
         Transform tmp = _numberCapitalsHUD.transform.parent;
         tmp.parent.gameObject.SetActive(false);
@@ -66,6 +71,9 @@ public class GameLoop : MonoBehaviour
                 _magicRed.SetActive(true);
                 _magisGreen.SetActive(true);
                 _dices.SetActive(true);
+
+                _menuSong.Stop();
+                _inGameSong.Play();
             }
         }
         else if (Phase == 1)

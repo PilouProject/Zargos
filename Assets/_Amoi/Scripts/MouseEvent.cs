@@ -17,7 +17,8 @@ public class MouseEvent : MonoBehaviour
     private float h, s, v;
     private bool _onMouseOver;
 
-
+    private AudioSource _putUnitSong;
+    private AudioSource _takeOffUnitSong;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,9 @@ public class MouseEvent : MonoBehaviour
         _colorEnd = new Color32(85, 255, 112, 0);
 
         _ownGroundHighlight.SetActive(false);
+
+        _putUnitSong = GameObject.Find("PutUnitSong").GetComponent<AudioSource>();
+        _takeOffUnitSong = GameObject.Find("TakeOffUnitSong").GetComponent<AudioSource>();
 
         //Physics.gravity = new Vector3(0, -9.81f, 0);
     }
@@ -62,6 +66,7 @@ public class MouseEvent : MonoBehaviour
         {
             if (GameLoop.Player1.TerritoryOwn[name] > 1)// && (GameLoop.Phase == 0 || GameLoop.Phase == 2))
             {
+                _takeOffUnitSong.Play();
                 GameLoop.Player1.NbUnitAvailable += 1;
                 Destroy(GameLoop.Player1.UnitsInTerritoryOwn[name][GameLoop.Player1.UnitsInTerritoryOwn[name].Count - 1]);
                 GameLoop.Player1.UnitsInTerritoryOwn[name].RemoveAt(GameLoop.Player1.UnitsInTerritoryOwn[name].Count - 1);
@@ -72,6 +77,7 @@ public class MouseEvent : MonoBehaviour
         {
             if (GameLoop.Player1.TerritoryOwn[name] >= 0 && GameLoop.Player1.NbUnitAvailable > 0 && (GameLoop.Phase == 0 || GameLoop.Phase == 2))
             {
+                _putUnitSong.Play();
                 GameLoop.Player1.NbUnitAvailable -= 1;
                 GameObject tmp = Instantiate(GameObject.Find(GameLoop.Player1.Race + "Units"), _spawnPoint.position, _spawnPoint.rotation);
                 GameLoop.Player1.UnitsInTerritoryOwn[name].Add(tmp);

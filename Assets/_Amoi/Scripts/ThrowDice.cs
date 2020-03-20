@@ -15,6 +15,8 @@ public class ThrowDice : MonoBehaviour
     private float _time;
     private bool _retry;
 
+    private AudioSource _throwDiceSong;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +25,8 @@ public class ThrowDice : MonoBehaviour
         _spawnPoint = GameObject.Find("spawnPoint");
         _throwingDice = false;
         _retry = false;
+
+        _throwDiceSong = GameObject.Find("ThrowDiceSong").GetComponent<AudioSource>();
     }
 
     private Vector3 Force()
@@ -55,8 +59,9 @@ public class ThrowDice : MonoBehaviour
 
     public void RollDice()
     {
-        if (Input.GetMouseButtonDown(Dice.MOUSE_RIGHT_BUTTON))
+        if (Input.GetMouseButtonDown(Dice.MOUSE_RIGHT_BUTTON) && _throwingDice == false)
         {
+            _throwDiceSong.PlayDelayed(3f);
             _retry = false;
             _throwingDice = true;
             if (attack_def == true)

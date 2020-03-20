@@ -35,6 +35,8 @@ public class ButtonInteractions : MonoBehaviour
     private bool _checkNbAIPlayers;
     private bool _checkRace;
 
+    private AudioSource _buttonSong;
+
     void Start()
     {
         _optionMenu = GameObject.Find("OptionMenu");
@@ -56,6 +58,8 @@ public class ButtonInteractions : MonoBehaviour
         _AIPlayers = GameObject.FindGameObjectsWithTag("NbAiPlayers");
 
         _moveCamera = GameObject.Find("HoldCamera").GetComponent<MoveCamera>();
+
+        _buttonSong = GameObject.Find("ButtonSong").GetComponent<AudioSource>();
 
         _optionMenu.SetActive(false);
         _rulesMenu.SetActive(false);
@@ -257,5 +261,10 @@ public class ButtonInteractions : MonoBehaviour
         _moveCamera.pause = false;
 
         //Reload Scene !!
+    }
+
+    public void OnButtonSong()
+    {
+        _buttonSong.Play();
     }
 }
