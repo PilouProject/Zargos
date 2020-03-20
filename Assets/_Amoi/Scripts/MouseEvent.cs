@@ -52,6 +52,8 @@ public class MouseEvent : MonoBehaviour
         {
             Color.RGBToHSV(_ground.material.color, out float h, out float s, out float v);
             s -= 0.4f;
+            if (s < 0)
+                s = 0;
             _ground.material.color = Color.HSVToRGB(h, s, v);
             _onMouseOver = true;
         }
