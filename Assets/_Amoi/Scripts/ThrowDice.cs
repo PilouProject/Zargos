@@ -45,11 +45,13 @@ public class ThrowDice : MonoBehaviour
         {
             _time += Time.deltaTime;
 
-            if (_time > 4f)
+            if (_time > 5f)
             {
                 _throwingDice = false;
                 if (Dice.AsString("d6").IndexOf("?") == -1)
                     _retry = true;
+                Dice.Clear();
+
                 Debug.Log(Dice.AsString("d6"));
                 Debug.Log(_retry);
                 Debug.Log(Dice.Value("d6"));

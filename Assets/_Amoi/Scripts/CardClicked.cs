@@ -22,19 +22,25 @@ public class CardClicked : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (transform.childCount != 0)
+        if (transform.childCount != 0 && GameLoop.Phase >= 0)
         {
             if (gameObject.name == "MagicRed" || gameObject.name == "MagicGreen")
             {
-                GameLoop.Player1.AddMagicCard(transform.GetChild(0).name);
+                if (GameLoop.Player1.DrawMagicCard == true)
+                {
+                    GameLoop.Player1.AddMagicCard(transform.GetChild(0).name);
+                    Debug.Log(transform.GetChild(0));
+                    Destroy(transform.GetChild(0).gameObject);
+                    _drawCardSong.Play();
+                }
             }
             else
             {
                 GameLoop.Player1.CardTreatmentPhase0(transform.GetChild(0).name);
+                Debug.Log(transform.GetChild(0));
+                Destroy(transform.GetChild(0).gameObject);
+                _drawCardSong.Play();
             }
-            Debug.Log(transform.GetChild(0));
-            Destroy(transform.GetChild(0).gameObject);
-            _drawCardSong.Play();
         }
     }
 }

@@ -10,6 +10,8 @@ public class PlayerClass
     public List<string> MagicCard;
     public int NbShips;
     public string Race;
+    public bool DrawMagicCard;
+
 
 
     //fonction hilight des regions possédé TerritoryOwn[Name] = 0;
@@ -73,6 +75,7 @@ public class PlayerClass
     public void Init()
     {
         //if le nb je joueur
+        DrawMagicCard = false;
         List<GameObject> tmp = new List<GameObject>();
         NbShips = 0;
         MagicCard = new List<string>();

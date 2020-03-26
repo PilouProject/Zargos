@@ -52,7 +52,7 @@ public class MouseEvent : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (_onMouseOver == false)
+        if (_onMouseOver == false && GameLoop.Phase >= 0)
         {
             Color.RGBToHSV(_ground.material.color, out float h, out float s, out float v);
             s -= 0.4f;
@@ -88,7 +88,7 @@ public class MouseEvent : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (_onMouseOver == true)
+        if (_onMouseOver == true && GameLoop.Phase >= 0)
         {
             Color.RGBToHSV(_ground.material.color, out float h, out float s, out float v);
             s += 0.4f;

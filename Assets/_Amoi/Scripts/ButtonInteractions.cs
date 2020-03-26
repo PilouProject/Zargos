@@ -37,7 +37,9 @@ public class ButtonInteractions : MonoBehaviour
 
     private AudioSource _buttonSong;
 
-    void Start()
+    private bool _pause;
+
+    private void Start()
     {
         _optionMenu = GameObject.Find("OptionMenu");
         _rulesMenu = GameObject.Find("RulesMenu");
@@ -68,6 +70,28 @@ public class ButtonInteractions : MonoBehaviour
 
         _checkRace = false;
         _checkNbAIPlayers = false;
+
+        _pause = false;
+    }
+
+    private void Update()
+    {
+        if (GameLoop.Phase >= 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (_pause == false)
+                {
+                    OnKeyOpenPauseMenuButton();
+                    _pause = true;
+                }
+                else
+                {
+                    OnKeyClosePauseMenuButton();
+                    _pause = false;
+                }
+            }
+        }
     }
 
     #region QUIT 
@@ -174,6 +198,7 @@ public class ButtonInteractions : MonoBehaviour
             _pauseMenu.SetActive(false);
             _principalMenu.SetActive(false);
             _inGameHUD.SetActive(true);
+            GameLoop.Phase = 0;
         }
     }
 
@@ -231,12 +256,13 @@ public class ButtonInteractions : MonoBehaviour
     public void OnKeyOpenPauseMenuButton()
     {
         _pauseMenu.SetActive(true);
+        _inGameHUD.SetActive(false);
     }
 
     public void OnKeyClosePauseMenuButton()
     {
         _pauseMenu.SetActive(false);
-        _moveCamera.pause = false;
+        _inGameHUD.SetActive(true);
     }
 
     public void OnRestartButton()
@@ -245,7 +271,7 @@ public class ButtonInteractions : MonoBehaviour
         _newgameMenu.SetActive(true);
         _startMenu.SetActive(true);
         _pauseMenu.SetActive(false);
-        _moveCamera.pause = false;
+        _pause = false;
     }
 
     #endregion
@@ -258,7 +284,7 @@ public class ButtonInteractions : MonoBehaviour
         _pauseMenu.SetActive(false);
         _principalMenu.SetActive(true);
         _moveCamera.inGame = false;
-        _moveCamera.pause = false;
+        _pause = false;
 
         //Reload Scene !!
     }

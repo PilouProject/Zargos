@@ -16,7 +16,6 @@ public class MoveCamera : MonoBehaviour
 
     private Input _key;
 
-    public bool pause;
     public bool inGame;
     private ButtonInteractions _buttons;
 
@@ -24,7 +23,6 @@ public class MoveCamera : MonoBehaviour
     void Start()
     {
         movementCameraBind = true;
-        pause = false;
         inGame = false;
         _buttons = GameObject.Find("ButtonInterractionsSystem").GetComponent<ButtonInteractions>();
     }
@@ -37,17 +35,6 @@ public class MoveCamera : MonoBehaviour
 
         if (inGame == true)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (pause == false)
-                {
-                    _buttons.OnKeyOpenPauseMenuButton();
-                    pause = true;
-                }
-                else
-                    _buttons.OnKeyClosePauseMenuButton();
-            }
-
             if (movementCameraBind == true)
             {
                 if (Input.GetKey("z"))
@@ -106,9 +93,8 @@ public class MoveCamera : MonoBehaviour
             _pos.y -= scroll * scrollSpeed * 100 * Time.deltaTime;
 
             _posBonderies.x = Mathf.Clamp(_posBonderies.x, -700, 700);
-            _posBonderies.y = Mathf.Clamp(_posBonderies.y, 30, 500);
+            _posBonderies.y = Mathf.Clamp(_posBonderies.y, 37, 500);
             _posBonderies.z = Mathf.Clamp(_posBonderies.z, -700, 700);
-
 
             transform.position = _posBonderies;
             transform.Translate(_pos, Space.Self);
