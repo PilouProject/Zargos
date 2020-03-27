@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ButtonInteractions : MonoBehaviour
@@ -268,6 +269,9 @@ public class ButtonInteractions : MonoBehaviour
     public void OnRestartButton()
     {
         //Reset Scene
+        GameLoop.CleanClones();
+        GameLoop.InitGameLoop();
+
         _newgameMenu.SetActive(true);
         _startMenu.SetActive(true);
         _pauseMenu.SetActive(false);
@@ -287,6 +291,7 @@ public class ButtonInteractions : MonoBehaviour
         _pause = false;
 
         //Reload Scene !!
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void OnButtonSong()

@@ -46,6 +46,8 @@ public class MouseEvent : MonoBehaviour
     {
         if (GameLoop.Player1.TerritoryOwn[name] >= 0)
             _ownGroundHighlight.SetActive(true);
+        else
+            _ownGroundHighlight.SetActive(false);
         _rendererHighlight.material.SetColor("_LineColor", Color.Lerp(_colorStart, _colorEnd, Mathf.PingPong(Time.time, t) / t));
 
     }
@@ -82,6 +84,7 @@ public class MouseEvent : MonoBehaviour
                 GameObject tmp = Instantiate(GameObject.Find(GameLoop.Player1.Race + "Units"), _spawnPoint.position, _spawnPoint.rotation);
                 GameLoop.Player1.UnitsInTerritoryOwn[name].Add(tmp);
                 GameLoop.Player1.TerritoryOwn[name] += 1;
+                tmp.tag = "Clones";
             }
         }
     }

@@ -14,6 +14,8 @@ public class GameLoop : MonoBehaviour
     private GameObject _magicRed;
     private GameObject _magicGreen;
     private GameObject _dices;
+    private GameObject _holdCardsRed;
+    private GameObject _holdCardsBlue;
 
     private Text _numberUnitsHUD;
     private Text _numberShipsHUD;
@@ -35,27 +37,58 @@ public class GameLoop : MonoBehaviour
     private List<GameObject> _renforcementCards;
     private List<GameObject> _regionCards;
 
+    private GameObject[] _cleanClones;
+
     // Start is called before the first frame update
     void Start()
     {
         InitGame = true;
 
+        InitGameLoop();
+    }
+
+    public void InitGameLoop()
+    {
         Phase = -1;
         Player1 = new PlayerClass();
         Player1.Init();
-        _renforcements = GameObject.Find("Renforcements");
-        _regions = GameObject.Find("Region");
-        _magicRed = GameObject.Find("MagicRed");
-        _magicRed.SetActive(false);
-        _magicGreen = GameObject.Find("MagicGreen");
-        _magicGreen.SetActive(false);
-        _dices = GameObject.Find("Dices");
-        _dices.SetActive(false);
+        if (GameObject.Find("Renforcements") != null)
+            _renforcements = GameObject.Find("Renforcements");
+        _renforcements.SetActive(true);
+        if (GameObject.Find("Regions") != null)
+            _regions = GameObject.Find("Regions");
+        _regions.SetActive(true);
+        if (GameObject.Find("MagicRed") != null)
+        {
+            _magicRed = GameObject.Find("MagicRed");
+            _magicRed.SetActive(false);
+        }
+        if (GameObject.Find("MagicGreen") != null)
+        {
+            _magicGreen = GameObject.Find("MagicGreen");
+            _magicGreen.SetActive(false);
+        }
+        if (GameObject.Find("Dices") != null)
+        {
+            _dices = GameObject.Find("Dices");
+            _dices.SetActive(false);
+        }
 
-        _numberUnitsHUD = GameObject.Find("NumberUnits").GetComponent<Text>();
-        _numberShipsHUD = GameObject.Find("NumberShips").GetComponent<Text>();
-        _numberRegionsHUD = GameObject.Find("NumberRegions").GetComponent<Text>();
-        _numberCapitalsHUD = GameObject.Find("NumberCapitals").GetComponent<Text>();
+        if (GameObject.Find("HoldCardBlue") != null)
+            _holdCardsBlue = GameObject.Find("HoldCardBlue");
+        _holdCardsBlue.SetActive(true);
+        if (GameObject.Find("HoldCardRed") != null)
+            _holdCardsRed = GameObject.Find("HoldCardRed");
+        _holdCardsRed.SetActive(false);
+
+        if (GameObject.Find("NumberUnits") != null)
+            _numberUnitsHUD = GameObject.Find("NumberUnits").GetComponent<Text>();
+        if (GameObject.Find("NumberShips") != null)
+            _numberShipsHUD = GameObject.Find("NumberShips").GetComponent<Text>();
+        if (GameObject.Find("NumberRegions") != null)
+            _numberRegionsHUD = GameObject.Find("NumberRegions").GetComponent<Text>();
+        if (GameObject.Find("NumberCapitals") != null)
+            _numberCapitalsHUD = GameObject.Find("NumberCapitals").GetComponent<Text>();
 
         _menuSong = GameObject.Find("MenuSong").GetComponent<AudioSource>();
         _inGameSong = GameObject.Find("InGameSong").GetComponent<AudioSource>();
@@ -63,14 +96,52 @@ public class GameLoop : MonoBehaviour
         Transform tmp = _numberCapitalsHUD.transform.parent;
         tmp.parent.gameObject.SetActive(false);
 
-        _magicGreenCards = GetCards(_magicGreen);
-        _magicRedCards = GetCards(_magicRed);
-        _renforcementCards = GetCards(_renforcements);
-        _regionCards = GetCards(_regions);
+        if (_magicGreen.transform.childCount > 0)
+            _magicGreenCards = GetCards(_magicGreen);
+        if (_magicRed.transform.childCount > 0)
+            _magicRedCards = GetCards(_magicRed);
+        if (_renforcements.transform.childCount > 0)
+            _renforcementCards = GetCards(_renforcements);
+        if (_regions.transform.childCount > 0)
+            _regionCards = GetCards(_regions);
+        RepopCards();
         _magicGreenCards = RandomizeCards(_magicGreenCards);
         _magicRedCards = RandomizeCards(_magicRedCards);
         _renforcementCards = RandomizeCards(_renforcementCards);
         _regionCards = RandomizeCards(_regionCards);
+    }
+
+    public void RepopCards()
+    {
+        foreach (GameObject childTmp in _magicRedCards)
+        {
+            childTmp.SetActive(true);
+        }
+
+        foreach (GameObject i in _magicGreenCards)
+        {
+            i.SetActive(true);
+        }
+
+        foreach (GameObject j in _renforcementCards)
+        {
+            j.SetActive(true);
+        }
+
+        foreach (GameObject x in _regionCards)
+        {
+            x.SetActive(true);
+        }
+    }
+
+    public void CleanClones()
+    {
+        
+        _cleanClones = GameObject.FindGameObjectsWithTag("Clones");
+        foreach (GameObject tmp in _cleanClones)
+        {
+            Destroy(tmp);
+        }
     }
 
     // Update is called once per frame
@@ -80,11 +151,12 @@ public class GameLoop : MonoBehaviour
 
         if (Phase == 0)
         {
-            if (_regions.transform.childCount <= 0 && _renforcements.transform.childCount <= 0)
+            if (CountChildActive(_regions.transform) == true && CountChildActive(_renforcements.transform) == true)
             {
                 Phase = 2;
                 GameObject.Find("HoldCamera").GetComponent<MoveCamera>().inGame = true;
-                GameObject.Find("HoldCardBlue").SetActive(false);
+                _holdCardsBlue.SetActive(false);
+                _holdCardsRed.SetActive(true);
                 _renforcements.SetActive(false);
                 _regions.SetActive(false);
                 _magicRed.SetActive(true);
@@ -106,6 +178,18 @@ public class GameLoop : MonoBehaviour
                 //next Phase = 1;
             }
         }
+    }
+
+    public bool CountChildActive(Transform tmp)
+    {
+        for (int i = 0; i < tmp.childCount; i++)
+        {
+            if (tmp.GetChild(i).gameObject.activeSelf == true)
+            {
+                return (false);
+            }
+        }
+        return (true);
     }
 
     public void UpdateHUD()

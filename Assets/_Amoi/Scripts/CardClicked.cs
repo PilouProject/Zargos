@@ -28,18 +28,32 @@ public class CardClicked : MonoBehaviour
             {
                 if (GameLoop.Player1.DrawMagicCard == true)
                 {
-                    GameLoop.Player1.AddMagicCard(transform.GetChild(0).name);
-                    Debug.Log(transform.GetChild(0));
-                    Destroy(transform.GetChild(0).gameObject);
-                    _drawCardSong.Play();
+                    for (int i = 0; i < transform.childCount; i++)
+                    {
+                        if (transform.GetChild(i).gameObject.activeSelf == true)
+                        {
+                            Debug.Log(transform.GetChild(i));
+                            GameLoop.Player1.AddMagicCard(transform.GetChild(i).name);
+                            transform.GetChild(i).gameObject.SetActive(false);
+                            _drawCardSong.Play();
+                            break;
+                        }
+                    }
                 }
             }
             else
             {
-                GameLoop.Player1.CardTreatmentPhase0(transform.GetChild(0).name);
-                Debug.Log(transform.GetChild(0));
-                Destroy(transform.GetChild(0).gameObject);
-                _drawCardSong.Play();
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    if (transform.GetChild(i).gameObject.activeSelf == true)
+                    {
+                        Debug.Log(transform.GetChild(i));
+                        GameLoop.Player1.CardTreatmentPhase0(transform.GetChild(i).name);
+                        transform.GetChild(i).gameObject.SetActive(false);
+                        _drawCardSong.Play();
+                        break;
+                    }
+                }
             }
         }
     }
