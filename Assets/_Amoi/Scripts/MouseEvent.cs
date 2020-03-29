@@ -44,12 +44,14 @@ public class MouseEvent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameLoop.Player1.TerritoryOwn[name] >= 0)
-            _ownGroundHighlight.SetActive(true);
-        else
-            _ownGroundHighlight.SetActive(false);
-        _rendererHighlight.material.SetColor("_LineColor", Color.Lerp(_colorStart, _colorEnd, Mathf.PingPong(Time.time, t) / t));
-
+        if (GameLoop.Phase >= 0)
+        {
+            if (GameLoop.CurrentPlayer.TerritoryOwn[name] >= 0)
+                _ownGroundHighlight.SetActive(true);
+            else
+                _ownGroundHighlight.SetActive(false);
+            _rendererHighlight.material.SetColor("_LineColor", Color.Lerp(_colorStart, _colorEnd, Mathf.PingPong(Time.time, t) / t));
+        }
     }
 
     private void OnMouseOver()
@@ -64,26 +66,26 @@ public class MouseEvent : MonoBehaviour
             _onMouseOver = true;
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && GameLoop.Phase >= 0)
         {
-            if (GameLoop.Player1.TerritoryOwn[name] > 1)// && (GameLoop.Phase == 0 || GameLoop.Phase == 2))
+            if (GameLoop.CurrentPlayer.TerritoryOwn[name] > 1)
             {
                 _takeOffUnitSong.Play();
-                GameLoop.Player1.NbUnitAvailable += 1;
-                Destroy(GameLoop.Player1.UnitsInTerritoryOwn[name][GameLoop.Player1.UnitsInTerritoryOwn[name].Count - 1]);
-                GameLoop.Player1.UnitsInTerritoryOwn[name].RemoveAt(GameLoop.Player1.UnitsInTerritoryOwn[name].Count - 1);
-                GameLoop.Player1.TerritoryOwn[name] -= 1;
+                GameLoop.CurrentPlayer.NbUnitAvailable += 1;
+                Destroy(GameLoop.CurrentPlayer.UnitsInTerritoryOwn[name][GameLoop.CurrentPlayer.UnitsInTerritoryOwn[name].Count - 1]);
+                GameLoop.CurrentPlayer.UnitsInTerritoryOwn[name].RemoveAt(GameLoop.CurrentPlayer.UnitsInTerritoryOwn[name].Count - 1);
+                GameLoop.CurrentPlayer.TerritoryOwn[name] -= 1;
             }
         }
-        else if (Input.GetMouseButtonDown(0))
+        else if (Input.GetMouseButtonDown(0) && GameLoop.Phase >= 0)
         {
-            if (GameLoop.Player1.TerritoryOwn[name] >= 0 && GameLoop.Player1.NbUnitAvailable > 0 && (GameLoop.Phase == 0 || GameLoop.Phase == 2))
+            if (GameLoop.CurrentPlayer.TerritoryOwn[name] >= 0 && GameLoop.CurrentPlayer.NbUnitAvailable > 0 && (GameLoop.Phase == 0 || GameLoop.Phase == 2))
             {
                 _putUnitSong.Play();
-                GameLoop.Player1.NbUnitAvailable -= 1;
-                GameObject tmp = Instantiate(GameObject.Find(GameLoop.Player1.Race + "Units"), _spawnPoint.position, _spawnPoint.rotation);
-                GameLoop.Player1.UnitsInTerritoryOwn[name].Add(tmp);
-                GameLoop.Player1.TerritoryOwn[name] += 1;
+                GameLoop.CurrentPlayer.NbUnitAvailable -= 1;
+                GameObject tmp = Instantiate(GameObject.Find(GameLoop.CurrentPlayer.Race + "Units"), _spawnPoint.position, _spawnPoint.rotation);
+                GameLoop.CurrentPlayer.UnitsInTerritoryOwn[name].Add(tmp);
+                GameLoop.CurrentPlayer.TerritoryOwn[name] += 1;
                 tmp.tag = "Clones";
             }
         }

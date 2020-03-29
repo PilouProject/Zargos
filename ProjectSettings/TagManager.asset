@@ -4,11 +4,16 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Races
   - NbAiPlayers
   - AttackDice
   - DefenseDice
   - Clones
+  - RacesJ1
+  - RacesJ2
+  - RacesJ3
+  - RacesJ4
+  - RacesJ5
+  - RacesJ6
   layers:
   - Default
   - TransparentFX

@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class GameLoop : MonoBehaviour
 {
-    public PlayerClass Player1;
+    public List<PlayerClass> Players;
+    public PlayerClass CurrentPlayer;
 
     public int Phase;
 
@@ -21,6 +22,7 @@ public class GameLoop : MonoBehaviour
     private Text _numberShipsHUD;
     private Text _numberRegionsHUD;
     private Text _numberCapitalsHUD;
+    private Text _currentPlayerTxt;
 
     private AudioSource _menuSong;
     private AudioSource _inGameSong;
@@ -39,6 +41,8 @@ public class GameLoop : MonoBehaviour
 
     private GameObject[] _cleanClones;
 
+    private int _indexPlayer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,8 +54,19 @@ public class GameLoop : MonoBehaviour
     public void InitGameLoop()
     {
         Phase = -1;
-        Player1 = new PlayerClass();
-        Player1.Init();
+        _indexPlayer = -1;
+        Players = new List<PlayerClass>();
+        Players.Add(new PlayerClass());
+        Players.Add(new PlayerClass());
+        Players.Add(new PlayerClass());
+        Players.Add(new PlayerClass());
+        Players.Add(new PlayerClass());
+        Players.Add(new PlayerClass());
+        NameClass(Players);
+
+        if (GameObject.Find("CurrentPlayerTxt") != null)
+            _currentPlayerTxt = GameObject.Find("CurrentPlayerTxt").GetComponent<Text>();
+
         if (GameObject.Find("Renforcements") != null)
             _renforcements = GameObject.Find("Renforcements");
         _renforcements.SetActive(true);
@@ -147,7 +162,8 @@ public class GameLoop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateHUD();
+        if (Phase >= 0)
+            UpdateHUD();
 
         if (Phase == 0)
         {
@@ -180,6 +196,41 @@ public class GameLoop : MonoBehaviour
         }
     }
 
+    public void NextPlayer()
+    {
+        _indexPlayer++;
+        if (_indexPlayer > 5)
+            _indexPlayer = 0;
+        if (Players[_indexPlayer].Race == "None")
+        {
+            NextPlayer();
+        }
+        else
+            CurrentPlayer = Players[_indexPlayer];
+    }
+
+    public void NameClass(List<PlayerClass> tmp)
+    {
+        tmp[0].Name = "J1";
+        tmp[0].ColorName = new Color32(26, 80, 255, 255);
+        tmp[0].Init();
+        tmp[1].Name = "J2";
+        tmp[1].ColorName = new Color32(255, 35, 26, 255);
+        tmp[1].Init();
+        tmp[2].Name = "J3";
+        tmp[2].ColorName = new Color32(16, 153, 27, 255);
+        tmp[2].Init();
+        tmp[3].Name = "J4";
+        tmp[3].ColorName = new Color32(217, 23, 171, 255);
+        tmp[3].Init();
+        tmp[4].Name = "J5";
+        tmp[4].ColorName = new Color32(255, 201, 26, 255);
+        tmp[4].Init();
+        tmp[5].Name = "J6";
+        tmp[5].ColorName = new Color32(144, 26, 255, 255);
+        tmp[5].Init();
+    }
+
     public bool CountChildActive(Transform tmp)
     {
         for (int i = 0; i < tmp.childCount; i++)
@@ -194,10 +245,13 @@ public class GameLoop : MonoBehaviour
 
     public void UpdateHUD()
     {
-        _numberUnitsHUD.text = Player1.NbUnitAvailable.ToString();
-        _numberShipsHUD.text = Player1.NbShips.ToString();
-        _numberRegionsHUD.text = Player1.NbTerritoryOwn(false).ToString();
-        _numberCapitalsHUD.text = Player1.NbTerritoryOwn(true).ToString();
+        _currentPlayerTxt.text = CurrentPlayer.Name;
+        _currentPlayerTxt.color = CurrentPlayer.ColorName;
+
+        _numberUnitsHUD.text = CurrentPlayer.NbUnitAvailable.ToString();
+        _numberShipsHUD.text = CurrentPlayer.NbShips.ToString();
+        _numberRegionsHUD.text = CurrentPlayer.NbTerritoryOwn(false).ToString();
+        _numberCapitalsHUD.text = CurrentPlayer.NbTerritoryOwn(true).ToString();
     }
 
     public List<GameObject> GetCards(GameObject tmp)

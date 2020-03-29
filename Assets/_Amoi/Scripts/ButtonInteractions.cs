@@ -28,7 +28,9 @@ public class ButtonInteractions : MonoBehaviour
     private GameObject _ZQSDButton;
     private GameObject _cursorButton;
 
-    private GameObject[] _races;
+    private int _indexRaces;
+    private List<GameObject[]> _races;
+    private List<GameObject> _racesUI;
     private GameObject[] _AIPlayers;
 
     private MoveCamera _moveCamera;
@@ -65,7 +67,25 @@ public class ButtonInteractions : MonoBehaviour
         _ZQSDButton = GameObject.Find("ZqsdCommand");
         _cursorButton = GameObject.Find("CursorCommand");
 
-        _races = GameObject.FindGameObjectsWithTag("Races");
+        _races = new List<GameObject[]>();
+        _races.Add(GameObject.FindGameObjectsWithTag("RacesJ1"));
+        _races.Add(GameObject.FindGameObjectsWithTag("RacesJ2"));
+        _races.Add(GameObject.FindGameObjectsWithTag("RacesJ3"));
+        _races.Add(GameObject.FindGameObjectsWithTag("RacesJ4"));
+        _races.Add(GameObject.FindGameObjectsWithTag("RacesJ5"));
+        _races.Add(GameObject.FindGameObjectsWithTag("RacesJ6"));
+        _racesUI = new List<GameObject>();
+        _racesUI.Add(GameObject.Find("J1Races"));
+        _racesUI.Add(GameObject.Find("J2Races"));
+        _racesUI[1].SetActive(false);
+        _racesUI.Add(GameObject.Find("J3Races"));
+        _racesUI[2].SetActive(false);
+        _racesUI.Add(GameObject.Find("J4Races"));
+        _racesUI[3].SetActive(false);
+        _racesUI.Add(GameObject.Find("J5Races"));
+        _racesUI[4].SetActive(false);
+        _racesUI.Add(GameObject.Find("J6Races"));
+        _racesUI[5].SetActive(false);
         _AIPlayers = GameObject.FindGameObjectsWithTag("NbAiPlayers");
 
         _moveCamera = GameObject.Find("HoldCamera").GetComponent<MoveCamera>();
@@ -217,6 +237,83 @@ public class ButtonInteractions : MonoBehaviour
             _principalMenu.SetActive(false);
             _inGameHUD.SetActive(true);
             GameLoop.Phase = 0;
+            GameLoop.NextPlayer();
+        }
+    }
+
+    public void OnNextPlayerRaces()
+    {
+        _indexRaces++;
+        if (_indexRaces > 5)
+            _indexRaces = 0;
+
+        if (_indexRaces == 0)
+        {
+            _racesUI[0].SetActive(true);
+            _racesUI[5].SetActive(false);
+        }
+        else if (_indexRaces == 1)
+        {
+            _racesUI[1].SetActive(true);
+            _racesUI[0].SetActive(false);
+        }
+        else if (_indexRaces == 2)
+        {
+            _racesUI[2].SetActive(true);
+            _racesUI[1].SetActive(false);
+        }
+        else if (_indexRaces == 3)
+        {
+            _racesUI[3].SetActive(true);
+            _racesUI[2].SetActive(false);
+        }
+        else if (_indexRaces == 4)
+        {
+            _racesUI[4].SetActive(true);
+            _racesUI[3].SetActive(false);
+        }
+        else if (_indexRaces == 5)
+        {
+            _racesUI[5].SetActive(true);
+            _racesUI[4].SetActive(false);
+        }
+    }
+
+    public void OnPreviusPlayerRaces()
+    {
+        _indexRaces--;
+        if (_indexRaces < 0)
+            _indexRaces = 5;
+
+        if (_indexRaces == 0)
+        {
+            _racesUI[0].SetActive(true);
+            _racesUI[1].SetActive(false);
+        }
+        else if (_indexRaces == 1)
+        {
+            _racesUI[1].SetActive(true);
+            _racesUI[2].SetActive(false);
+        }
+        else if (_indexRaces == 2)
+        {
+            _racesUI[2].SetActive(true);
+            _racesUI[3].SetActive(false);
+        }
+        else if (_indexRaces == 3)
+        {
+            _racesUI[3].SetActive(true);
+            _racesUI[4].SetActive(false);
+        }
+        else if (_indexRaces == 4)
+        {
+            _racesUI[4].SetActive(true);
+            _racesUI[5].SetActive(false);
+        }
+        else if (_indexRaces == 5)
+        {
+            _racesUI[5].SetActive(true);
+            _racesUI[0].SetActive(false);
         }
     }
 
@@ -224,18 +321,18 @@ public class ButtonInteractions : MonoBehaviour
     {
         if (EventSystem.current.currentSelectedGameObject.transform.GetComponent<Button>().interactable == true)
         {
-            for (int i = 0; i < _races.Length; i++)
+            for (int i = 0; i < _races[_indexRaces].Length; i++)
             {
-                _races[i].GetComponent<Button>().interactable = true;
+                _races[_indexRaces][i].GetComponent<Button>().interactable = true;
             }
             EventSystem.current.currentSelectedGameObject.transform.GetComponent<Button>().interactable = false;
 
-            for (int i = 0; i < _races.Length; i++)
+            for (int i = 0; i < _races[_indexRaces].Length; i++)
             {
-                if (_races[i].GetComponent<Button>().interactable == false)
+                if (_races[_indexRaces][i].GetComponent<Button>().interactable == false)
                 {
-                    GameLoop.Player1.Race = _races[i].name;
-                    Debug.Log(GameLoop.Player1.Race);
+                    GameLoop.Players[_indexRaces].Race = _races[_indexRaces][i].name;
+                    Debug.Log(GameLoop.Players[_indexRaces].Race);
                 }
             }
             _checkRace = true;
@@ -306,8 +403,10 @@ public class ButtonInteractions : MonoBehaviour
         _principalMenu.SetActive(true);
         _moveCamera.inGame = false;
         _pause = false;
+    }
 
-        //Reload Scene !!
+    public void OnGoMenuButtonReloadScene()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

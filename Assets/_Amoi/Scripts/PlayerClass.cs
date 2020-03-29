@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerClass
 {
+    public string Name;
+    public Color32 ColorName;
     public int NbUnitAvailable;
     public Dictionary<string, int> TerritoryOwn;
     public Dictionary<string, List<GameObject>> UnitsInTerritoryOwn;
@@ -12,9 +14,6 @@ public class PlayerClass
     public string Race;
     public bool DrawMagicCard;
 
-
-
-    //fonction hilight des regions possédé TerritoryOwn[Name] = 0;
 
     public void AddMagicCard(string NameCard)
     {
@@ -74,7 +73,7 @@ public class PlayerClass
 
     public void Init()
     {
-        //if le nb je joueur
+        Race = "None";
         DrawMagicCard = false;
         List<GameObject> tmp = new List<GameObject>();
         NbShips = 0;

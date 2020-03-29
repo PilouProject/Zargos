@@ -26,14 +26,14 @@ public class CardClicked : MonoBehaviour
         {
             if (gameObject.name == "MagicRed" || gameObject.name == "MagicGreen")
             {
-                if (GameLoop.Player1.DrawMagicCard == true)
+                if (GameLoop.CurrentPlayer.DrawMagicCard == true)
                 {
                     for (int i = 0; i < transform.childCount; i++)
                     {
                         if (transform.GetChild(i).gameObject.activeSelf == true)
                         {
                             Debug.Log(transform.GetChild(i));
-                            GameLoop.Player1.AddMagicCard(transform.GetChild(i).name);
+                            GameLoop.CurrentPlayer.AddMagicCard(transform.GetChild(i).name);
                             transform.GetChild(i).gameObject.SetActive(false);
                             _drawCardSong.Play();
                             break;
@@ -48,9 +48,10 @@ public class CardClicked : MonoBehaviour
                     if (transform.GetChild(i).gameObject.activeSelf == true)
                     {
                         Debug.Log(transform.GetChild(i));
-                        GameLoop.Player1.CardTreatmentPhase0(transform.GetChild(i).name);
+                        GameLoop.CurrentPlayer.CardTreatmentPhase0(transform.GetChild(i).name);
                         transform.GetChild(i).gameObject.SetActive(false);
                         _drawCardSong.Play();
+                        GameLoop.NextPlayer();
                         break;
                     }
                 }
