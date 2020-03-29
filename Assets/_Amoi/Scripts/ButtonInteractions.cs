@@ -40,8 +40,16 @@ public class ButtonInteractions : MonoBehaviour
 
     private bool _pause;
 
+    private AudioSource _menuSong;
+    private AudioSource _inGameSong;
+    private GameObject _scrollBarSong;
+
     private void Start()
     {
+        _menuSong = GameObject.Find("MenuSong").GetComponent<AudioSource>();
+        _inGameSong = GameObject.Find("InGameSong").GetComponent<AudioSource>();
+        _scrollBarSong = GameObject.Find("ScrollbarSong");
+
         _optionMenu = GameObject.Find("OptionMenu");
         _rulesMenu = GameObject.Find("RulesMenu");
         _principalMenu = GameObject.Find("PrincipalMenu");
@@ -77,6 +85,8 @@ public class ButtonInteractions : MonoBehaviour
 
     private void Update()
     {
+        SoundMangement();
+
         if (GameLoop.Phase >= 0)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -166,6 +176,13 @@ public class ButtonInteractions : MonoBehaviour
         _moveCamera.movementCameraBind = false;
         _ZQSDButton.GetComponent<Image>().sprite = Box;
         _cursorButton.GetComponent<Image>().sprite = CheckBox;
+    }
+
+    public void SoundMangement()
+    {
+        _menuSong.volume = _scrollBarSong.GetComponent<Scrollbar>().value;
+        _inGameSong.volume = _scrollBarSong.GetComponent<Scrollbar>().value;
+        _scrollBarSong.transform.GetChild(0).gameObject.GetComponent<Text>().text = _menuSong.volume.ToString("N");
     }
 
     #endregion
