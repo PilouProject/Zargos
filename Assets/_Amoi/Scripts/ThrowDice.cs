@@ -20,6 +20,7 @@ public class ThrowDice : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _time = 0f;
         _attackDice = GameObject.FindGameObjectsWithTag("AttackDice");
         _defenseDice = GameObject.FindGameObjectsWithTag("DefenseDice");
         _spawnPoint = GameObject.Find("spawnPoint");
@@ -45,16 +46,16 @@ public class ThrowDice : MonoBehaviour
         {
             _time += Time.deltaTime;
 
-            if (_time > 5f)
+            if (_time > 4f)
             {
+                _time = 0f;
                 _throwingDice = false;
                 if (Dice.AsString("d6").IndexOf("?") == -1)
                     _retry = true;
-                Dice.Clear();
 
                 Debug.Log(Dice.AsString("d6"));
-                Debug.Log(_retry);
-                Debug.Log(Dice.Value("d6"));
+                Debug.Log("Value : " + Dice.Value("d6"));
+                Dice.Clear();
             }
         }
     }

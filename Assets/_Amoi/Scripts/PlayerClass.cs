@@ -73,7 +73,8 @@ public class PlayerClass
 
     public void Init()
     {
-        Race = "None";
+        if (Race == null)
+            Race = "None";
         DrawMagicCard = false;
         List<GameObject> tmp = new List<GameObject>();
         NbShips = 0;

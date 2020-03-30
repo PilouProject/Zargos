@@ -43,6 +43,8 @@ public class GameLoop : MonoBehaviour
 
     private int _indexPlayer;
 
+    private GameObject _holdCamera;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,17 +57,22 @@ public class GameLoop : MonoBehaviour
     {
         Phase = -1;
         _indexPlayer = -1;
-        Players = new List<PlayerClass>();
-        Players.Add(new PlayerClass());
-        Players.Add(new PlayerClass());
-        Players.Add(new PlayerClass());
-        Players.Add(new PlayerClass());
-        Players.Add(new PlayerClass());
-        Players.Add(new PlayerClass());
+        if (Players == null)
+        {
+            Players = new List<PlayerClass>();
+            Players.Add(new PlayerClass());
+            Players.Add(new PlayerClass());
+            Players.Add(new PlayerClass());
+            Players.Add(new PlayerClass());
+            Players.Add(new PlayerClass());
+            Players.Add(new PlayerClass());
+        }
         NameClass(Players);
 
         if (GameObject.Find("CurrentPlayerTxt") != null)
             _currentPlayerTxt = GameObject.Find("CurrentPlayerTxt").GetComponent<Text>();
+
+        _holdCamera = GameObject.Find("HoldCamera");
 
         if (GameObject.Find("Renforcements") != null)
             _renforcements = GameObject.Find("Renforcements");
@@ -151,7 +158,6 @@ public class GameLoop : MonoBehaviour
 
     public void CleanClones()
     {
-        
         _cleanClones = GameObject.FindGameObjectsWithTag("Clones");
         foreach (GameObject tmp in _cleanClones)
         {
@@ -170,7 +176,7 @@ public class GameLoop : MonoBehaviour
             if (CountChildActive(_regions.transform) == true && CountChildActive(_renforcements.transform) == true)
             {
                 Phase = 2;
-                GameObject.Find("HoldCamera").GetComponent<MoveCamera>().inGame = true;
+                _holdCamera.GetComponent<MoveCamera>().inGame = true;
                 _holdCardsBlue.SetActive(false);
                 _holdCardsRed.SetActive(true);
                 _renforcements.SetActive(false);
@@ -199,7 +205,7 @@ public class GameLoop : MonoBehaviour
     public void NextPlayer()
     {
         _indexPlayer++;
-        if (_indexPlayer > 5)
+        if (_indexPlayer >= Players.Count)
             _indexPlayer = 0;
         if (Players[_indexPlayer].Race == "None")
         {

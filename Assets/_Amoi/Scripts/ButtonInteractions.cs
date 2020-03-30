@@ -122,7 +122,15 @@ public class ButtonInteractions : MonoBehaviour
                     _pause = false;
                 }
             }
+
+            if (GameLoop.Phase >= 2)
+            {
+                if (Input.GetKeyDown("n"))
+                    GameLoop.NextPlayer();
+            }
         }
+        else
+            CheckRace();
     }
 
     #region QUIT 
@@ -196,13 +204,6 @@ public class ButtonInteractions : MonoBehaviour
         _moveCamera.movementCameraBind = false;
         _ZQSDButton.GetComponent<Image>().sprite = Box;
         _cursorButton.GetComponent<Image>().sprite = CheckBox;
-    }
-
-    public void SoundMangement()
-    {
-        _menuSong.volume = _scrollBarSong.GetComponent<Scrollbar>().value;
-        _inGameSong.volume = _scrollBarSong.GetComponent<Scrollbar>().value;
-        _scrollBarSong.transform.GetChild(0).gameObject.GetComponent<Text>().text = _menuSong.volume.ToString("N");
     }
 
     #endregion
@@ -335,7 +336,20 @@ public class ButtonInteractions : MonoBehaviour
                     Debug.Log(GameLoop.Players[_indexRaces].Race);
                 }
             }
-            _checkRace = true;
+        }
+    }
+
+    public void CheckRace()
+    {
+        foreach (PlayerClass tmp in GameLoop.Players)
+        {
+            if (tmp.Race != "None")
+            {
+                _checkRace = true;
+                break;
+            }
+            else
+                _checkRace = false;
         }
     }
 
@@ -385,11 +399,16 @@ public class ButtonInteractions : MonoBehaviour
         //Reset Scene
         GameLoop.CleanClones();
         GameLoop.InitGameLoop();
+        _moveCamera.ResetCameraPosition();
 
+        _checkRace = false;
         _newgameMenu.SetActive(true);
         _startMenu.SetActive(true);
         _pauseMenu.SetActive(false);
         _pause = false;
+        _inGameSong.Stop();
+        _menuSong.Play();
+        Dice.Clear();
     }
 
     #endregion
@@ -413,5 +432,12 @@ public class ButtonInteractions : MonoBehaviour
     public void OnButtonSong()
     {
         _buttonSong.Play();
+    }
+
+    public void SoundMangement()
+    {
+        _menuSong.volume = _scrollBarSong.GetComponent<Scrollbar>().value;
+        _inGameSong.volume = _scrollBarSong.GetComponent<Scrollbar>().value;
+        _scrollBarSong.transform.GetChild(0).gameObject.GetComponent<Text>().text = _menuSong.volume.ToString("N");
     }
 }

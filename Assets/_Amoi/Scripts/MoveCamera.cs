@@ -14,6 +14,9 @@ public class MoveCamera : MonoBehaviour
     private Vector3 _posBonderies;
     private float _mouseX;
 
+    private Vector3 _initialPosition;
+    private Quaternion _initialRotation;
+
     private Input _key;
 
     public bool inGame;
@@ -22,9 +25,17 @@ public class MoveCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _initialPosition = transform.position;
+        _initialRotation = transform.rotation;
         movementCameraBind = true;
         inGame = false;
         _buttons = GameObject.Find("ButtonInterractionsSystem").GetComponent<ButtonInteractions>();
+    }
+
+    public void ResetCameraPosition()
+    {
+        transform.position = _initialPosition;
+        transform.rotation = _initialRotation;
     }
 
     // Update is called once per frame
