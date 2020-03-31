@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MouseEvent : MonoBehaviour
 {
     public GameLoop GameLoop;
+
+    private ButtonInteractions _buttonInt;
 
     private Transform _spawnPoint;
 
@@ -23,6 +26,8 @@ public class MouseEvent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _buttonInt = GameObject.Find("ButtonInterractionsSystem").GetComponent<ButtonInteractions>();
+
         _spawnPoint = transform.GetChild(0);
 
         _onMouseOver = false;
@@ -58,6 +63,7 @@ public class MouseEvent : MonoBehaviour
     {
         if (_onMouseOver == false && GameLoop.Phase >= 0)
         {
+            _buttonInt.InGameOnMouseInfoOn(name);
             Color.RGBToHSV(_ground.material.color, out float h, out float s, out float v);
             s -= 0.4f;
             if (s < 0)
@@ -95,6 +101,7 @@ public class MouseEvent : MonoBehaviour
     {
         if (_onMouseOver == true && GameLoop.Phase >= 0)
         {
+            _buttonInt.InGameOnMouseInfoOff();
             Color.RGBToHSV(_ground.material.color, out float h, out float s, out float v);
             s += 0.4f;
             _ground.material.color = Color.HSVToRGB(h, s, v);

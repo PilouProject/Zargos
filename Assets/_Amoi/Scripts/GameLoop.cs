@@ -290,4 +290,14 @@ public class GameLoop : MonoBehaviour
         }
         return (_children);
     }
+
+    public PlayerClass GetPlayerWithRegionName(string tmp)
+    {
+        foreach (PlayerClass tmpClass in Players)
+        {
+            if (tmpClass.TerritoryOwn[tmp] >= 0)
+                return (tmpClass);
+        }
+        return (null);
+    }
 }

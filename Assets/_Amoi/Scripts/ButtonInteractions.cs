@@ -12,6 +12,13 @@ public class ButtonInteractions : MonoBehaviour
     public Sprite Box;
     public Sprite CheckBox;
     public GameLoop GameLoop;
+    public Sprite Amazon;
+    public Sprite Knight;
+    public Sprite Ailé;
+    public Sprite Spider;
+    public Sprite Monk;
+    public Sprite Dragon;
+
 
     private GameObject _optionMenu;
     private GameObject _rulesMenu;
@@ -20,6 +27,12 @@ public class ButtonInteractions : MonoBehaviour
     private GameObject _pauseMenu;
     private GameObject _newgameMenu;
     private GameObject _inGameHUD;
+
+    private GameObject _InGameUiOnMouse;
+    private Text _InGameUiOnMousePlayerName;
+    private Image _InGameUiOnMouseRace;
+    private Text _InGameUiOnMouseUnitsNumber;
+    private PlayerClass _tmp;
 
     private GameObject _lowButton;
     private GameObject _mediumButton;
@@ -59,6 +72,11 @@ public class ButtonInteractions : MonoBehaviour
         _pauseMenu = GameObject.Find("PauseMenu");
         _newgameMenu = GameObject.Find("NewGameMenu");
         _inGameHUD = GameObject.Find("InGameHUD");
+
+        _InGameUiOnMouse = GameObject.Find("InGameUiOnMouse");
+        _InGameUiOnMousePlayerName = GameObject.Find("InGameUiOnMousePlayerName").GetComponent<Text>();
+        _InGameUiOnMouseRace = GameObject.Find("InGameUiOnMouseRace").GetComponent<Image>();
+        _InGameUiOnMouseUnitsNumber = GameObject.Find("InGameUiOnMouseUnitsNumber").GetComponent<Text>();
 
         _lowButton = GameObject.Find("LowButton");
         _mediumButton = GameObject.Find("MediumButton");
@@ -118,8 +136,16 @@ public class ButtonInteractions : MonoBehaviour
                 }
                 else
                 {
-                    OnKeyClosePauseMenuButton();
-                    _pause = false;
+                    if (_optionMenu.activeSelf == true || _rulesMenu.activeSelf == true)
+                    {
+                        _optionMenu.SetActive(false);
+                        _rulesMenu.SetActive(false);
+                    }
+                    else
+                    {
+                        OnKeyClosePauseMenuButton();
+                        _pause = false;
+                    }
                 }
             }
 
@@ -237,6 +263,7 @@ public class ButtonInteractions : MonoBehaviour
             _pauseMenu.SetActive(false);
             _principalMenu.SetActive(false);
             _inGameHUD.SetActive(true);
+            _InGameUiOnMouse.SetActive(false);
             GameLoop.Phase = 0;
             GameLoop.NextPlayer();
         }
@@ -392,6 +419,7 @@ public class ButtonInteractions : MonoBehaviour
     {
         _pauseMenu.SetActive(false);
         _inGameHUD.SetActive(true);
+        _pause = false;
     }
 
     public void OnRestartButton()
@@ -439,5 +467,34 @@ public class ButtonInteractions : MonoBehaviour
         _menuSong.volume = _scrollBarSong.GetComponent<Scrollbar>().value;
         _inGameSong.volume = _scrollBarSong.GetComponent<Scrollbar>().value;
         _scrollBarSong.transform.GetChild(0).gameObject.GetComponent<Text>().text = _menuSong.volume.ToString("N");
+    }
+
+    public void InGameOnMouseInfoOn(string tmp)
+    {
+        _tmp = GameLoop.GetPlayerWithRegionName(tmp);
+        if (_tmp != null)
+        {
+            _InGameUiOnMouse.SetActive(true);
+            _InGameUiOnMousePlayerName.text = _tmp.Name;
+            _InGameUiOnMousePlayerName.color = _tmp.ColorName;
+            _InGameUiOnMouseUnitsNumber.text = _tmp.TerritoryOwn[tmp].ToString();
+            if (Ailé.name == _tmp.Race)
+                _InGameUiOnMouseRace.sprite = Ailé;
+            else if (Knight.name == _tmp.Race)
+                _InGameUiOnMouseRace.sprite = Knight;
+            else if (Spider.name == _tmp.Race)
+                _InGameUiOnMouseRace.sprite = Spider;
+            else if (Monk.name == _tmp.Race)
+                _InGameUiOnMouseRace.sprite = Monk;
+            else if (Amazon.name == _tmp.Race)
+                _InGameUiOnMouseRace.sprite = Amazon;
+            else if (Dragon.name == _tmp.Race)
+                _InGameUiOnMouseRace.sprite = Dragon;
+        }
+    }
+
+    public void InGameOnMouseInfoOff()
+    {
+        _InGameUiOnMouse.SetActive(false);
     }
 }
