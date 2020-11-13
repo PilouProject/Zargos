@@ -266,6 +266,7 @@ public class ButtonInteractions : MonoBehaviour
             _InGameUiOnMouse.SetActive(false);
             GameLoop.Phase = 0;
             GameLoop.NextPlayer();
+            GameLoop.InitPowerRaces();
         }
     }
 

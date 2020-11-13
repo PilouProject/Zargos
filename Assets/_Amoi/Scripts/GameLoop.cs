@@ -300,4 +300,13 @@ public class GameLoop : MonoBehaviour
         }
         return (null);
     }
+
+    public void InitPowerRaces()
+    {
+        foreach (PlayerClass tmp in Players)
+        {
+            if (tmp.Race == "Dragons")
+                tmp.NbShips = 100;
+        }
+    }
 }
